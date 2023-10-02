@@ -1,7 +1,7 @@
 #  coding: utf-8 
 import socketserver
 
-# Copyright 2013 Abram Hindle, Eddie Antonio Santos
+# Copyright 2013 Abram Hindle, Eddie Antonio Santos, Mark Maligalig
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,6 +33,13 @@ class MyWebServer(socketserver.BaseRequestHandler):
         self.data = self.request.recv(1024).strip()
         print ("Got a request of: %s\n" % self.data)
         self.request.sendall(bytearray("OK",'utf-8'))
+
+        self.path = "/www/index.html"
+        file_to_open = open(self.path[1:]).read()
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(bytes(file_to_open, 'utf-8'))
+        
 
 if __name__ == "__main__":
     HOST, PORT = "localhost", 8080
